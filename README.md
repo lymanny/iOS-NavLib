@@ -63,7 +63,7 @@ import NavLib
 ### Configure Navigation Bar
 
 ```swift
-setNavigationBarStyle(
+setNavigationBarStyleWeBill(
     isHidden: false, // Show navigation bar
     barTintColor: UIColor.cyan, // Background color
     titleConfig: NavigationTitleConfig(
