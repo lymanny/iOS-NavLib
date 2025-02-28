@@ -10,7 +10,7 @@ import UIKit
 public extension UIViewController {
     
     // MARK: - Navigation Bar Customization
-    func setNavigationBarStyle(
+    func setNavigationBarStyleWeBill(
         isHidden: Bool, // Hides or shows the navigation bar
         barTintColor: UIColor = UIColor.white, // Background color of the navigation bar
         titleConfig: NavigationTitleConfig, // 🔹 Title Configuration

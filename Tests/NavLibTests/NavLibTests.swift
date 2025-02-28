@@ -3,7 +3,7 @@ import XCTest
 
 final class NavLibTests: XCTestCase {
     
-    func testSetNavigationBarStyle() throws {
+    func testSetNavigationBarStyleWeBill() throws {
         // Arrange
         let viewController = UIViewController()
         let navigationController = UINavigationController(rootViewController: viewController) // Embed in UINavigationController
@@ -30,7 +30,7 @@ final class NavLibTests: XCTestCase {
         )
         
         // Act
-        viewController.setNavigationBarStyle(
+        viewController.setNavigationBarStyleWeBill(
             isHidden: false,
             barTintColor: .white,
             titleConfig: titleConfig,
