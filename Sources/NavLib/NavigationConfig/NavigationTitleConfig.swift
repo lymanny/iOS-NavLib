@@ -12,7 +12,7 @@ public struct NavigationTitleConfig {
     public var title: String
     public var titleImage: UIImage? = nil // Dynamic Image Support
     public var titleImageSize: CGSize = CGSize(width: 18, height: 16) // Title Image Size
-    public var titleFontName: String = "System" // Title Font Name
+    public var titleFontName: String = "Inter" // Title Font Name
     public var titleFontSize: CGFloat = 16 // Title Font Size
     public var titleFontWeight: UIFont.Weight = .semibold // Title Font Weight
     public var titleColor: UIColor = .black // Title Text Color

@@ -59,30 +59,39 @@ public extension UIViewController {
         titleStackView.axis = .vertical
         titleStackView.alignment = .center
         titleStackView.spacing = titleSubtitleSpacing
-        
+
         // Create Title Button
         let titleButton = UIButton()
-        var config = UIButton.Configuration.plain()
-        config.attributedTitle = AttributedString(titleConfig.title, attributes: AttributeContainer([
-            .font: UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight),
-            .foregroundColor: titleConfig.titleColor
-        ]))
-        config.image = titleConfig.titleImage
-        config.imagePlacement = titleConfig.titleImageDirection
-        config.imagePadding = titleConfig.titleImagePadding
-        config.contentInsets = .zero
-        
-        if let image = titleConfig.titleImage {
-            titleButton.setImage(image.resized(to: titleConfig.titleImageSize), for: .normal)
+
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.attributedTitle = AttributedString(titleConfig.title, attributes: AttributeContainer([
+                .font: UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight),
+                .foregroundColor: titleConfig.titleColor
+            ]))
+            config.image = titleConfig.titleImage
+            config.imagePlacement = titleConfig.titleImageDirection
+            config.imagePadding = titleConfig.titleImagePadding
+            config.contentInsets = .zero
+            
+            titleButton.configuration = config
+        } else {
+            // Fallback for iOS 14 and earlier
+            titleButton.setTitle(titleConfig.title, for: .normal)
+            titleButton.setTitleColor(titleConfig.titleColor, for: .normal)
+            titleButton.titleLabel?.font = UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight)
+
+            if let image = titleConfig.titleImage {
+                titleButton.setImage(image.resized(to: titleConfig.titleImageSize), for: .normal)
+            }
         }
-        titleButton.configuration = config
-        
+
         if let selector = titleConfig.titleSelector {
             titleButton.addTarget(self, action: selector, for: .touchUpInside)
         }
-        
+
         titleStackView.addArrangedSubview(titleButton)
-        
+
         // Add subtitle if available
         if let subtitleConfig = subtitleConfig {
             let subtitleLabel = UILabel()
@@ -92,7 +101,7 @@ public extension UIViewController {
             subtitleLabel.textAlignment = .center
             titleStackView.addArrangedSubview(subtitleLabel)
         }
-        
+
         return titleStackView
     }
     
