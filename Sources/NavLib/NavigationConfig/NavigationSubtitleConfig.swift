@@ -10,7 +10,7 @@ import UIKit
 // MARK: - Navigation Subtitle Configuration
 public struct NavigationSubtitleConfig {
     public var subtitle: String
-    public var subtitleFontName: String = "System" // Subtitle Font Name
+    public var subtitleFontName: String = "Inter" // Subtitle Font Name
     public var subtitleFontSize: CGFloat = 12 // Subtitle Font Size
     public var subtitleFontWeight: UIFont.Weight = .regular // Subtitle Font Weight
     public var subtitleColor: UIColor = .gray // Subtitle Color
@@ -18,7 +18,7 @@ public struct NavigationSubtitleConfig {
     // Public initializer
     public init(
         subtitle: String,
-        subtitleFontName: String = "System",
+        subtitleFontName: String = "Inter",
         subtitleFontSize: CGFloat = 12,
         subtitleFontWeight: UIFont.Weight = .regular,
         subtitleColor: UIColor = .gray

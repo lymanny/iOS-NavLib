@@ -18,7 +18,7 @@ public extension UIViewController {
         leftButtons: [NavigationButtonConfig] = [], // 🔹 Left Button Configurations
         rightButtons: [NavigationButtonConfig] = [], // 🔹 Right Button Configurations
         titleSubtitleSpacing: CGFloat = 2, // 🔹 Spacing Between Title & Subtitle
-        btnLeftRightSpacing: CGFloat = 12 // 🔹 Spacing for Left & Right Buttons
+        btnLeftRightSpacing: CGFloat = 20 // 🔹 Spacing for Left & Right Buttons
     ) {
         guard let navController = navigationController else { return }
         

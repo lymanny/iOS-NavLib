@@ -31,7 +31,7 @@ public struct NavigationButtonConfig {
 // MARK: - Button Title Configuration
 public struct ButtonTitleConfig {
     public var title: String
-    public var titleFontName: String = "System" // Title Font Name
+    public var titleFontName: String = "Inter" // Title Font Name
     public var titleFontSize: CGFloat = 16 // Title Font Size
     public var titleFontWeight: UIFont.Weight = .medium // Title Font Weight
     public var titleColor: UIColor = .systemBlue // Title Text Color
@@ -39,7 +39,7 @@ public struct ButtonTitleConfig {
     // Public initializer
     public init(
         title: String,
-        titleFontName: String = "System",
+        titleFontName: String = "Inter",
         titleFontSize: CGFloat = 16,
         titleFontWeight: UIFont.Weight = .medium,
         titleColor: UIColor = .systemBlue

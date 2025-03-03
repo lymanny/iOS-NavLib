@@ -25,7 +25,7 @@ public struct NavigationTitleConfig {
         title: String,
         titleImage: UIImage? = nil,
         titleImageSize: CGSize = CGSize(width: 18, height: 16),
-        titleFontName: String = "System",
+        titleFontName: String = "Inter",
         titleFontSize: CGFloat = 16,
         titleFontWeight: UIFont.Weight = .semibold,
         titleColor: UIColor = .black,
