@@ -6,7 +6,7 @@ A **lightweight and customizable navigation bar library** for UIKit, designed to
 
 ## 📋 Requirements
 
-- **iOS 15.0+**
+- **iOS 13.0+**
 - **Xcode 12+**
 
 ---
