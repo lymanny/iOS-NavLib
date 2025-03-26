@@ -59,10 +59,10 @@ public extension UIViewController {
         titleStackView.axis = .vertical
         titleStackView.alignment = .center
         titleStackView.spacing = titleSubtitleSpacing
-
+        
         // Create Title Button
         let titleButton = UIButton()
-
+        
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.plain()
             config.attributedTitle = AttributedString(titleConfig.title, attributes: AttributeContainer([
@@ -80,28 +80,36 @@ public extension UIViewController {
             titleButton.setTitle(titleConfig.title, for: .normal)
             titleButton.setTitleColor(titleConfig.titleColor, for: .normal)
             titleButton.titleLabel?.font = UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight)
-
+            
             if let image = titleConfig.titleImage {
                 titleButton.setImage(image.resized(to: titleConfig.titleImageSize), for: .normal)
             }
         }
-
+        
         if let selector = titleConfig.titleSelector {
             titleButton.addTarget(self, action: selector, for: .touchUpInside)
         }
-
+        
         titleStackView.addArrangedSubview(titleButton)
-
+        
         // Add subtitle if available
         if let subtitleConfig = subtitleConfig {
             let subtitleLabel = UILabel()
             subtitleLabel.text = subtitleConfig.subtitle
-            subtitleLabel.font = UIFont.systemFont(ofSize: subtitleConfig.subtitleFontSize, weight: subtitleConfig.subtitleFontWeight)
+            subtitleLabel.font = UIFont(name: subtitleConfig.subtitleFontName, size: subtitleConfig.subtitleFontSize) ??
+            UIFont.systemFont(ofSize: subtitleConfig.subtitleFontSize, weight: subtitleConfig.subtitleFontWeight)
             subtitleLabel.textColor = subtitleConfig.subtitleColor
             subtitleLabel.textAlignment = .center
+            
+            // ✅ Add these 4 lines here
+            subtitleLabel.numberOfLines = 0
+            subtitleLabel.lineBreakMode = .byWordWrapping
+            subtitleLabel.setContentHuggingPriority(.required, for: .vertical)
+            subtitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+            
             titleStackView.addArrangedSubview(subtitleLabel)
         }
-
+        
         return titleStackView
     }
     
@@ -138,7 +146,7 @@ public extension UIViewController {
                 name: titleConfig.titleFontName,
                 size: titleConfig.titleFontSize
             ) ?? UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight)
-
+            
             // Apply constraints for title
             NSLayoutConstraint.activate([
                 button.widthAnchor.constraint(greaterThanOrEqualToConstant: 60), // Minimum width for title
