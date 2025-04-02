@@ -167,7 +167,7 @@ public extension UIViewController {
         if let image = config.image {
             let resizedImage = image.resized(to: CGSize(width: config.frame.width, height: config.frame.height))
             button.setImage(resizedImage, for: .normal)
-            button.imageView?.contentMode = .scaleAspectFill
+            button.imageView?.contentMode = config.imageContentMode
             
             // Apply constraints for image
             NSLayoutConstraint.activate([

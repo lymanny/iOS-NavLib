@@ -12,6 +12,7 @@ public struct NavigationButtonConfig {
     public var titleConfig: ButtonTitleConfig? = nil // Title configuration
     public var image: UIImage? = nil // Button image
     public var frame: CGRect = CGRect(x: 0, y: 0, width: 24, height: 24) // Button frame
+    public var imageContentMode: UIView.ContentMode = .scaleAspectFill
     public var selector: Selector? = nil // Button action selector
 
     // Public initializer
@@ -19,11 +20,13 @@ public struct NavigationButtonConfig {
         titleConfig: ButtonTitleConfig? = nil,
         image: UIImage? = nil,
         frame: CGRect = CGRect(x: 0, y: 0, width: 24, height: 24),
+        imageContentMode: UIView.ContentMode = .scaleAspectFill,
         selector: Selector? = nil
     ) {
         self.titleConfig = titleConfig
         self.image = image
         self.frame = frame
+        self.imageContentMode = imageContentMode
         self.selector = selector
     }
 }
