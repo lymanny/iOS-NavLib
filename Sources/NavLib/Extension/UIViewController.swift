@@ -64,26 +64,36 @@ public extension UIViewController {
         let titleButton = UIButton()
         
         if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.plain()
-            config.attributedTitle = AttributedString(titleConfig.title, attributes: AttributeContainer([
-                .font: UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight),
+            // Properly apply custom font using NSAttributedString (better Khmer rendering)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont(name: titleConfig.titleFontName, size: titleConfig.titleFontSize)
+                ?? UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight),
                 .foregroundColor: titleConfig.titleColor
-            ]))
-            config.image = titleConfig.titleImage
-            config.imagePlacement = titleConfig.titleImageDirection
-            config.imagePadding = titleConfig.titleImagePadding
-            config.contentInsets = .zero
-            
-            titleButton.configuration = config
-        } else {
-            // Fallback for iOS 14 and earlier
-            titleButton.setTitle(titleConfig.title, for: .normal)
-            titleButton.setTitleColor(titleConfig.titleColor, for: .normal)
-            titleButton.titleLabel?.font = UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight)
+            ]
+            let attributedTitle = NSAttributedString(string: titleConfig.title, attributes: attributes)
+            titleButton.setAttributedTitle(attributedTitle, for: .normal)
+            titleButton.titleLabel?.numberOfLines = 0
+            titleButton.titleLabel?.textAlignment = .center
             
             if let image = titleConfig.titleImage {
                 titleButton.setImage(image.resized(to: titleConfig.titleImageSize), for: .normal)
+                titleButton.semanticContentAttribute = titleConfig.titleImageDirection == .leading ? .forceLeftToRight : .forceRightToLeft
+                titleButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: titleConfig.titleImagePadding, bottom: 0, right: 0)
             }
+        } else {
+            // Fallback for iOS 14 and earlier (supports iOS 13+)
+            titleButton.setTitle(titleConfig.title, for: .normal)
+            titleButton.setTitleColor(titleConfig.titleColor, for: .normal)
+            titleButton.titleLabel?.font = UIFont(name: titleConfig.titleFontName, size: titleConfig.titleFontSize)
+            ?? UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight)
+            
+            if let image = titleConfig.titleImage {
+                let resizedImage = image.resized(to: titleConfig.titleImageSize)
+                titleButton.setImage(resizedImage, for: .normal)
+                titleButton.semanticContentAttribute = titleConfig.titleImageDirection == .leading ? .forceLeftToRight : .forceRightToLeft
+                titleButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: titleConfig.titleImagePadding, bottom: 0, right: 0)
+            }
+            
         }
         
         if let selector = titleConfig.titleSelector {
@@ -101,7 +111,6 @@ public extension UIViewController {
             subtitleLabel.textColor = subtitleConfig.subtitleColor
             subtitleLabel.textAlignment = .center
             
-            // ✅ Add these 4 lines here
             subtitleLabel.numberOfLines = 0
             subtitleLabel.lineBreakMode = .byWordWrapping
             subtitleLabel.setContentHuggingPriority(.required, for: .vertical)
