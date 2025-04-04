@@ -200,7 +200,7 @@ public extension UIViewController {
     
     @objc func handleProfile(_ sender: UIButton) {
         animateButton(sender) {
-            print("👤 Profile button tapped")
+            print("👤 Profile button tapped.")
         }
     }
 }
