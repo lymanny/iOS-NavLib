@@ -46,7 +46,8 @@ public extension UIViewController {
         navController.navigationBar.tintColor = titleConfig.titleColor
         
         // Set up title and subtitle stack view
-        self.navigationItem.titleView = createTitleStackView(titleConfig: titleConfig, subtitleConfig: subtitleConfig, titleSubtitleSpacing: titleSubtitleSpacing)
+        self.navigationItem.titleView = createTitleView(titleConfig: titleConfig)
+        
         
         // Set up left and right navigation buttons
         self.navigationItem.leftBarButtonItems = createNavigationBarButtons(leftButtons, spacing: btnLeftRightSpacing)
@@ -54,17 +55,15 @@ public extension UIViewController {
     }
     
     // MARK: - Create Title View
-    func createTitleStackView(titleConfig: NavigationTitleConfig, subtitleConfig: NavigationSubtitleConfig?, titleSubtitleSpacing: CGFloat) -> UIView {
-        let titleStackView = UIStackView()
-        titleStackView.axis = .vertical
-        titleStackView.alignment = .center
-        titleStackView.spacing = titleSubtitleSpacing
-        
-        // Create Title Button
-        let titleButton = UIButton()
+    func createTitleView(titleConfig: NavigationTitleConfig) -> UIView {
+        let titleButton = UIButton(type: .system)
+        titleButton.setTitleColor(titleConfig.titleColor, for: .normal)
+        titleButton.titleLabel?.textAlignment = .center
+        titleButton.titleLabel?.numberOfLines = 0
+        titleButton.setContentHuggingPriority(.required, for: .horizontal)
+        titleButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         if #available(iOS 15.0, *) {
-            // Properly apply custom font using NSAttributedString (better Khmer rendering)
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont(name: titleConfig.titleFontName, size: titleConfig.titleFontSize)
                 ?? UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight),
@@ -72,55 +71,25 @@ public extension UIViewController {
             ]
             let attributedTitle = NSAttributedString(string: titleConfig.title, attributes: attributes)
             titleButton.setAttributedTitle(attributedTitle, for: .normal)
-            titleButton.titleLabel?.numberOfLines = 0
-            titleButton.titleLabel?.textAlignment = .center
-            
-            if let image = titleConfig.titleImage {
-                titleButton.setImage(image.resized(to: titleConfig.titleImageSize), for: .normal)
-                titleButton.semanticContentAttribute = titleConfig.titleImageDirection == .leading ? .forceLeftToRight : .forceRightToLeft
-                titleButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: titleConfig.titleImagePadding, bottom: 0, right: 0)
-            }
         } else {
-            // Fallback for iOS 14 and earlier (supports iOS 13+)
             titleButton.setTitle(titleConfig.title, for: .normal)
-            titleButton.setTitleColor(titleConfig.titleColor, for: .normal)
             titleButton.titleLabel?.font = UIFont(name: titleConfig.titleFontName, size: titleConfig.titleFontSize)
             ?? UIFont.systemFont(ofSize: titleConfig.titleFontSize, weight: titleConfig.titleFontWeight)
-            
-            if let image = titleConfig.titleImage {
-                let resizedImage = image.resized(to: titleConfig.titleImageSize)
-                titleButton.setImage(resizedImage, for: .normal)
-                titleButton.semanticContentAttribute = titleConfig.titleImageDirection == .leading ? .forceLeftToRight : .forceRightToLeft
-                titleButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: titleConfig.titleImagePadding, bottom: 0, right: 0)
-            }
-            
+        }
+        
+        if let image = titleConfig.titleImage {
+            titleButton.setImage(image.resized(to: titleConfig.titleImageSize), for: .normal)
+            titleButton.semanticContentAttribute = titleConfig.titleImageDirection == .leading ? .forceLeftToRight : .forceRightToLeft
+            titleButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: titleConfig.titleImagePadding, bottom: 0, right: 0)
         }
         
         if let selector = titleConfig.titleSelector {
             titleButton.addTarget(self, action: selector, for: .touchUpInside)
         }
         
-        titleStackView.addArrangedSubview(titleButton)
-        
-        // Add subtitle if available
-        if let subtitleConfig = subtitleConfig {
-            let subtitleLabel = UILabel()
-            subtitleLabel.text = subtitleConfig.subtitle
-            subtitleLabel.font = UIFont(name: subtitleConfig.subtitleFontName, size: subtitleConfig.subtitleFontSize) ??
-            UIFont.systemFont(ofSize: subtitleConfig.subtitleFontSize, weight: subtitleConfig.subtitleFontWeight)
-            subtitleLabel.textColor = subtitleConfig.subtitleColor
-            subtitleLabel.textAlignment = .center
-            
-            subtitleLabel.numberOfLines = 0
-            subtitleLabel.lineBreakMode = .byWordWrapping
-            subtitleLabel.setContentHuggingPriority(.required, for: .vertical)
-            subtitleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-            
-            titleStackView.addArrangedSubview(subtitleLabel)
-        }
-        
-        return titleStackView
+        return titleButton
     }
+    
     
     // MARK: - Create Navigation Buttons with Spacing
     func createNavigationBarButtons(_ buttons: [NavigationButtonConfig], spacing: CGFloat) -> [UIBarButtonItem] {
