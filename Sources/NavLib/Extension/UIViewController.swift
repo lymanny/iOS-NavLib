@@ -93,7 +93,6 @@ public extension UIViewController {
                 titleButton.semanticContentAttribute = titleConfig.titleImageDirection == .leading ? .forceLeftToRight : .forceRightToLeft
                 titleButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: titleConfig.titleImagePadding, bottom: 0, right: 0)
             }
-            
         }
         
         if let selector = titleConfig.titleSelector {
@@ -119,7 +118,23 @@ public extension UIViewController {
             titleStackView.addArrangedSubview(subtitleLabel)
         }
         
-        return titleStackView
+        // Wrap the stack view in a container view to fix layout issues on devices like iPhone X
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(titleStackView)
+        
+        titleStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            titleStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            titleStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            titleStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            
+            // Optional: Prevent layout overflow on smaller screens
+            containerView.widthAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.width - 120)
+        ])
+        
+        return containerView
     }
     
     // MARK: - Create Navigation Buttons with Spacing
